@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ski Slope List</title>
+</head>
+<body>
+
+<div>
+    <!-- The form below should invoke the method SkiSlopeController.listAll -->
+    <form id="filter-form">
+        <label for="name">Slope Name</label>
+        <input id="name" type="text" name=""/>
+
+        <label for="length">Slope Length (in meters)</label>
+        <input id="length" type="number" name=""/>
+
+        <label for="difficulty">Slope Difficulty</label>
+        <select id="difficulty" name="">
+            <option value="">All</option>
+            <!-- For each SlopeDifficulty you should have one <option> like below  -->
+            <option>[slopeDifficulty]</option>
+        </select>
+
+        <label for="skiResort">Ski Resort</label>
+        <select id="skiResort" name="">
+            <option value="">All</option>
+            <!-- For each ski resort you should have one <option> like below  -->
+            <option>[skiResort.name]</option>
+        </select>
+
+        <button id="filter" type="submit">Filter</button>
+    </form>
+
+    <div>
+        <!-- SkiSlopeController.showAdd -->
+        <a href="" class="add-item">Add new ski slope</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Slope Name</th>
+            <th>Length</th>
+            <th>Difficulty</th>
+            <th>Ski Resort</th>
+            <th>Open/Closed</th>
+            <th>Actions</th>
+        </tr>
+        <!-- For each ski slope you should have one <tr> like below -->
+        <tr class="item">
+            <td>[slope.name]</td>
+            <td>[slope.length]</td>
+            <td>[slope.difficulty]</td>
+            <td>[slope.skiResort.name]</td>
+            <td>[slope.closed] -> OPEN/CLOSED</td>
+            <td>
+                <!-- SkiSlopeController.edit -->
+                <a class="edit-item">Edit</a>
+
+                <!-- SkiSlopeController.delete -->
+                <form>
+                    <button type="submit" class="delete-item">Delete</button>
+                </form>
+
+                <!-- SkiSlopeController.close -->
+                <form>
+                    <button type="submit" class="close-item">Close</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+</body>
+</html>
