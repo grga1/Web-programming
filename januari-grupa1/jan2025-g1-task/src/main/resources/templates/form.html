@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Archaeological Site Form</title>
+</head>
+<body>
+<!-- The form should submit to ArchaeologicalSiteController.create or ArchaeologicalSiteController.update,
+     depending on whether we are creating or editing an archaeological site -->
+<form method="post" th:action="@{${archaeologicalSite == null ? '/archaeological-sites' : '/archaeological-sites/' + archaeologicalSite.id}}">
+    <div>
+        <label for="name">Site Name</label>
+        <input type="text"
+               id="name"
+               name="name"
+               th:value="${archaeologicalSite != null ? archaeologicalSite.name : ''}"
+               required>
+    </div>
+
+    <div>
+        <label for="areaSize">Site Area Size (in square meters)</label>
+        <input type="number"
+               id="areaSize"
+               name="areaSize"
+               th:value="${archaeologicalSite?.areaSize}"
+               required>
+    </div>
+
+    <div>
+        <label for="rating">Site Rating</label><br/>
+        <input type="number"
+               id="rating"
+               name="rating"
+               step="0.1"
+               min="0"
+               max="10"
+               th:value="${archaeologicalSite?.rating}"
+               required>
+    </div>
+
+    <div>
+        <label for="period">Historical Period</label><br/>
+        <select id="period" name="period" size="5" required>
+            <!-- For each HistoricalPeriod you should have one <option> like below  -->
+            <option th:each="his : ${periods}"
+                    th:text="${his}"
+                    th:value="${his}"
+                    th:selected="${archaeologicalSite?.period == his}"
+            >[historicalPeriod]</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="location">SiteLocation</label><br/>
+        <select id="location" name="locationId" required size="5">
+            <!-- For each location you should have one <option> like below  -->
+            <option th:each="loc : ${siteLocations}"
+                    th:text="${loc.getCity()+', '+loc.getCountry()}"
+                    th:value="${loc.id}"
+                    th:selected="${archaeologicalSite?.location?.id == loc.id}"
+            >[location.city] , [location.country]</option>
+        </select>
+    </div>
+
+    <button id="submit" type="submit">Submit</button>
+    <a id="back" href="/archaeological-sites" type="button" class="btn btn-primary">Back to Archaeological Sites</a>
+</form>
+
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+</body>
+</html>
