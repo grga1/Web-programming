@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Startup List</title>
+</head>
+<body>
+
+<div>
+    <!-- The form below should invoke the method StartupController.listAll -->
+    <form id="filter-form">
+        <label for="name">Startup Name</label>
+        <input id="name" type="text" name=""/>
+
+        <label for="valuation">Valuation (in millions)</label>
+        <input id="valuation" type="number" name=""/>
+
+        <label for="yearFounded">Year Founded</label>
+        <input id="yearFounded" type="number" min="2000" name=""/>
+
+        <label for="industry">Industry</label>
+        <select id="industry" name="">
+            <option value="">All</option>
+            <!-- For each Industry you should have one <option> like below  -->
+            <option>[industry]</option>
+        </select>
+
+        <label for="founderId">Founder</label>
+        <select id="founderId" name="">
+            <option value="">All</option>
+            <!-- For each founder you should have one <option> like below  -->
+            <option>[founder.name]</option>
+        </select>
+
+        <button id="filter" type="submit">Filter</button>
+    </form>
+
+    <div>
+        <!-- StartupController.showAdd -->
+        <a class="add-item">Add new startup</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Startup Name</th>
+            <th>Valuation</th>
+            <th>Year Founded</th>
+            <th>Industry</th>
+            <th>Founder</th>
+            <th>Active/Deactivated</th>
+            <th>Actions</th>
+        </tr>
+        <!-- For each startup you should have one <tr> like below -->
+        <tr class="item">
+            <td>[startup.name]</td>
+            <td>[startup.valuation]</td>
+            <td>[startup.yearFounded]</td>
+            <td>[startup.industry]</td>
+            <td>[startup.founder.name]</td>
+            <td>[startup.active] -> ACTIVE/DEACTIVATED</td>
+            <td>
+                <!-- StartupController.edit -->
+                <a class="edit-item">Edit</a>
+
+                <!-- StartupController.delete -->
+                <form>
+                    <button type="submit" class="delete-item">Delete</button>
+                </form>
+
+                <!-- StartupController.close -->
+                <form>
+                    <button type="submit" class="close-item">Deactivate</button>
+                </form>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+
+</body>
+</html>
