@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>national park List</title>
+</head>
+<body>
+
+<div>
+    <!-- The form below should invoke the method NationalParkController.listAll -->
+    <form id="filter-form" th:action="@{/national-parks}" th:method="GET">
+        <label for="name">National Park Name</label>
+        <input id="name" type="text" name="name"/>
+
+        <label for="areaSize">National Park Area Size (in square meters)</label>
+        <input id="areaSize" type="number" name="areaSize"/>
+
+        <label for="rating">Rating</label>
+        <input id="rating" type="number" step="0.1" min="0" max="10" name="rating"/>
+
+        <label for="parkType">National Park Type</label>
+        <select id="parkType" name="parkType">
+            <option value="">All</option>
+            <!-- For each ParkType you should have one <option> like below  -->
+            <option th:each="park : ${parkTypes}"
+                    th:value="${park}"
+                    th:text="${park}"
+                    th:selected="${parkType != null && parkType == park}"
+            >[parkType]</option>
+        </select>
+
+        <label for="location">ParkLocation</label>
+        <select id="location" name="locationId">
+            <option value="">All</option>
+            <!-- For each location you should have one <option> like below  -->
+            <option th:each="loc : ${parkLocations}"
+                    th:value="${loc.id}"
+                    th:text="${loc.getCountry()+', '+loc.getContinent()}"
+                    th:selected="${locationId != null && locationId == loc.id}"
+            >[location.country], [location.continent]</option>
+        </select>
+
+        <button id="filter" type="submit">Filter</button>
+    </form>
+
+    <div>
+        <!-- NationalParkController.showAdd -->
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/national-parks/add}" class="add-item">Add new national park</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>National Park</th>
+            <th>Area Size</th>
+            <th>Rating</th>
+            <th>National Park Type</th>
+            <th>ParkLocation</th>
+            <th>Open/Closed</th>
+            <th>Actions</th>
+        </tr>
+        <!-- For each national park you should have one <tr> like below -->
+        <tr th:each="park : ${page.content}" class="item">
+            <td th:text="${park.name}">[park.name]</td>
+            <td th:text="${park.areaSize}">[park.areaSize]</td>
+            <td th:text="${park.rating}">[park.rating]</td>
+            <td th:text="${park.parkType}">[park.parkType]</td>
+            <td th:text="${park.location.country+', '+park.location.continent}">[park.location.country], [park.location.continent]</td>
+            <td th:text="${park.closed} ? 'CLOSED':'OPEN'">[park.closed] -> OPEN/CLOSED</td>
+            <td>
+                <!-- NationalParkController.edit -->
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{'/national-parks/edit/{id}' (id=${park.id})}" class="edit-item">Edit</a>
+
+                <!-- NationalParkController.delete -->
+                <form sec:authorize="hasRole('ADMIN')"
+                      th:action="@{'/national-parks/delete/{id}' (id=${park.id})}"
+                      th:method="POST"
+                >
+                    <button type="submit" class="delete-item">Delete</button>
+                </form>
+
+                <!-- NationalParkController.close -->
+                <form sec:authorize="hasRole('ADMIN')" th:if="${!park.closed}"
+                      th:action="@{'/national-parks/close/{id}' (id=${park.id})}"
+                      th:method="POST"
+                >
+                    <button type="submit" class="close-item">Close</button>
+                </form>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+
+</body>
+</html>
