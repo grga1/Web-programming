@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>WP Exam</title>
+</head>
+<body>
+
+<div>
+    <!-- The form below should invoke the method ExpensesController.listAll -->
+    <form th:action="@{/expenses}" th:method="GET" id="filter-form" >
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title"/>
+        <label for="expenseCategory">Expense Category</label>
+        <select id="expenseCategory" name="expenseCategory">
+            <option value="">All</option>
+            <!-- For each ExpenseCategory you should have one <option> like below  -->
+            <option th:each="exp : ${expenses}"
+                    th:value="${exp}"
+                    th:text="${exp}"
+                    th:selected="${expenseCategory != null && expenseCategory == exp}"
+            >[expenseCategory]</option>
+        </select>
+        <label for="vendor">Vendor</label>
+        <select id="vendor" name="vendor">
+            <option value="">All</option>
+            <!-- For each Vendor you should have one <option> like below  -->
+            <option th:each="ven : ${vendors}"
+                    th:value="${ven.id}"
+                    th:text="${ven.name}"
+                    th:selected="${vendorId != null && vendorId == ven.id}"
+
+            >[vendor.name]</option>
+        </select>
+        <button id="filter" type="submit">Filter</button>
+    </form>
+    <div>
+        <!-- ExpensesController.showAdd -->
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/expenses/add}" class="add-item">
+            Add new expense
+        </a>
+    </div>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Date of Creation</th>
+            <th>Amount</th>
+            <th>Expense Category</th>
+            <th>Vendor</th>
+            <th>Days to expire</th>
+            <th>Actions</th>
+        </tr>
+        <!-- For each expense you should have one <tr> like below -->
+        <tr th:each="expense : ${page.content}" class="item">
+            <td th:text="${expense.title}">[expense.title]</td>
+            <td th:text="${expense.dateCreated}">[expense.dateCreated]</td>
+            <td th:text="${expense.amount}">[expense.amount]</td>
+            <td th:text="${expense.expenseCategory}">[expense.expenseCategory]</td>
+            <td th:text="${expense.vendor.name}">[expense.vendor.name]</td>
+            <td th:text="${expense.daysToExpire}">[expense.daysToExpire]</td>
+            <td>
+                <!-- ExpensesController.delete -->
+                <form sec:authorize="hasRole('ADMIN')" th:action="@{'/expenses/delete/{id}' (id=${expense.id})}"
+                      th:method="POST"
+                >
+                    <button type="submit" class="delete-item">Delete</button>
+                </form>
+                <!-- ExpensesController.showEdit -->
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{'/expenses/edit/{id}' (id=${expense.id})}" class="edit-item">Edit</a>
+                <!-- ExpensesController.extend -->
+                <form sec:authorize="hasRole('USER')" th:action="@{'/expenses/extend/{id}' (id=${expense.id})}"
+                      th:method="POST"
+                >
+                    <button type="submit" class="extend-item">Extend expiration</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+</body>
+</html>
